@@ -69,7 +69,7 @@ router.post('/forget-password', async (req, res) => {
             return res.status(400).send("This email doesn't exist");
         }
 
-        const token = jwt.sign({ id: user._id }, verifyToken, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id }, process.env.TOKEN_SECRET, { expiresIn: '1h' });
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000;
         await user.save();
@@ -78,10 +78,11 @@ router.post('/forget-password', async (req, res) => {
         console.log('Reset token set for user:', email);
 
         const transporter = nodemailer.createTransport({
-            service: 'gmail',
+            host: 'smtp.ethereal.email',
+            port: 587,
             auth: {
-                user: process.env.EMAIL,
-                pass: process.env.EMAIL_PASSWORD
+                user: 'luciano.emmerich21@ethereal.email',
+                pass: 'JWp4Wmj3GMFZPKZ2uA'
             }
         });
 
@@ -89,7 +90,7 @@ router.post('/forget-password', async (req, res) => {
             to: user.email,
             from: {
                 name: 'Donation Site ICP',
-                email: process.env.EMAIL
+                email: "cs@icp.edu.pk"
             },
             subject: 'Password Reset',
             text: `Please click on the following link, or paste it into your browser to complete the process:\n\n
@@ -99,7 +100,7 @@ router.post('/forget-password', async (req, res) => {
 
         transporter.sendMail(mailOptions, (err, response) => {
             if (err) {
-                console.error('Error in sending email:', err);
+                console.error('Error in sending email:', err); // Log detailed error
                 return res.status(500).send('Error in sending email');
             }
             console.log('Email sent successfully to:', user.email);
@@ -110,6 +111,7 @@ router.post('/forget-password', async (req, res) => {
         res.status(500).send('Error on the server');
     }
 });
+
 
 // Reset Password Route
 router.post('/reset-password/:token', async (req, res) => {
