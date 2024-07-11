@@ -28,7 +28,7 @@ const Navbar = () => {
         <a className="py-2 md:py-0 text-lg hover:bg-yellow-400 rounded hover:p-1 cursor-pointer  ">Home</a>
         <a  className="py-2 md:py-0 text-lg  hover:bg-yellow-400 rounded hover:p-1 cursor-pointer">Donate</a>
         <a  className="py-2 md:py-0 text-lg  hover:bg-yellow-400 rounded hover:p-1 cursor-pointer">Way to give</a>
-        <a  className="py-2 md:py-0 text-lg  hover:bg-yellow-400 rounded hover:p-1 cursor-pointer">Contact</a>
+        <a  className="py-2 md:py-0 text-lg  hover:bg-yellow-400 rounded hover:p-1 cursor-pointer">Contact Us</a>
       </div>
         <button className='font-bold text-lg rounded text-black bg-yellow-500 px-4 mx-4 p-2 font-sans hover:text-black hover:bg-white hover:scale-110'>Donate Now</button>
       
