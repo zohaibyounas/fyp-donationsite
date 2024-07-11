@@ -46,59 +46,72 @@ router.post('/login', async (req, res) => {
     const compare = await bcrypt.compare(password, findedUser.password);
     if (!compare) return res.status(400).send("Password Incorrect");
 
-    const token = jwt.sign({ email: findedUser.email },process.env.TOKEN_SECRET)
-    res.header('token', token).send();
-    
+    const token = jwt.sign({ email: findedUser.email }, process.env.TOKEN_SECRET)
+    res.header('token', token).send("Logged In Successfully");
+
 
 })
 
 
+// const verifyToken = process.env.TOKEN_SECRET || osama; // Ensure this is securely set in a config file
+
+// Forget Password Route
 router.post('/forget-password', async (req, res) => {
     const { email } = req.body;
 
     try {
+        // Log incoming request
+        console.log('Forget password request received for email:', email);
+
         const user = await User.findOne({ email });
         if (!user) {
+            console.log('Email not found:', email);
             return res.status(400).send("This email doesn't exist");
         }
 
-        const token = jwt.sign({ id: user._id }, tokenSecret, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user._id }, verifyToken, { expiresIn: '1h' });
         user.resetPasswordToken = token;
         user.resetPasswordExpires = Date.now() + 3600000;
         await user.save();
 
+        // Log that the user token has been updated
+        console.log('Reset token set for user:', email);
+
         const transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
+            service: 'gmail',
             auth: {
-                user: 'alvena88@ethereal.email',
-                pass: '4p8umPBq2heJ4bYVWE'
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD
             }
         });
 
         const mailOptions = {
             to: user.email,
-            from:"alvena88@ethereal.email",
-            subject: "Password Reset",
+            from: {
+                name: 'Donation Site ICP',
+                email: process.env.EMAIL
+            },
+            subject: 'Password Reset',
             text: `Please click on the following link, or paste it into your browser to complete the process:\n\n
             http://localhost:3000/reset-password/${token}\n\n
             If you did not request this, please ignore this email and your password will remain unchanged.\n`
-        }
+        };
 
         transporter.sendMail(mailOptions, (err, response) => {
             if (err) {
-                console.error('There was an error: ', err);
+                console.error('Error in sending email:', err);
                 return res.status(500).send('Error in sending email');
             }
+            console.log('Email sent successfully to:', user.email);
             res.status(200).send('Recovery email sent');
         });
     } catch (err) {
+        console.error('Server error:', err);
         res.status(500).send('Error on the server');
     }
+});
 
-})
-
-
+// Reset Password Route
 router.post('/reset-password/:token', async (req, res) => {
     const { token } = req.params;
     const { password } = req.body;
@@ -106,8 +119,8 @@ router.post('/reset-password/:token', async (req, res) => {
     try {
         console.log('Received reset-password request');
         console.log('Token:', token);
-        
-        const decoded = jwt.verify(token, tokenSecret);
+
+        const decoded = jwt.verify(token, verifyToken);
         console.log('Decoded token:', decoded);
 
         const user = await User.findOne({
@@ -139,3 +152,4 @@ router.post('/reset-password/:token', async (req, res) => {
 });
 
 module.exports = router;
+
