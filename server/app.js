@@ -16,7 +16,9 @@ const corsOption = {
 app.use(cors(corsOption))
 connectDB();
 
-
+app.get('/', (req, res) => {
+  res.send('Hello, world!');
+});
 app.use('/api',userRoutes)
 
 
