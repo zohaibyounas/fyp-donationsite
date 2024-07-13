@@ -1,7 +1,7 @@
 const router = require("express").Router();
 const User = require("../models/User");
 const { regValidation } = require("./validation")
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer')
 const verifyToken = require('./verifyToken')
@@ -32,8 +32,6 @@ router.post('/register', async (req, res) => {
     } catch (error) {
         res.status(400).send(error)
     }
-
-
 })
 
 // const tokenSecret = '12345';
@@ -78,11 +76,12 @@ router.post('/forget-password', async (req, res) => {
         console.log('Reset token set for user:', email);
 
         const transporter = nodemailer.createTransport({
-            host: 'smtp.ethereal.email',
-            port: 587,
+            service:"gmail",
+            host: 'smtp.gmail.com',
+            // port: 587,
             auth: {
-                user: 'luciano.emmerich21@ethereal.email',
-                pass: 'JWp4Wmj3GMFZPKZ2uA'
+                user: process.env.EMAIL,
+                pass: process.env.APP_PASSWORD
             }
         });
 
@@ -93,7 +92,8 @@ router.post('/forget-password', async (req, res) => {
                 email: "cs@icp.edu.pk"
             },
             subject: 'Password Reset',
-            text: `Please click on the following link, or paste it into your browser to complete the process:\n\n
+            text: `This Email is Sent by Donation Site ICP
+            Please click on the following link, or paste it into your browser to complete the process:\n\n
             http://localhost:3000/reset-password/${token}\n\n
             If you did not request this, please ignore this email and your password will remain unchanged.\n`
         };
