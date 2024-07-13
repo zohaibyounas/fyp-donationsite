@@ -3,12 +3,13 @@ const nodemailer = require("nodemailer");
 const router = require("express").Router();
 require("dotenv").config();
 router.post("/submit",(req,res)=>{
-    const {name,email,message} = req.body;
+    const {name,email,message,number} = req.body;
 
     const submission = new Contact({
         name,
         email,
-        message
+        message,
+        number
     })
     try {
         const submittedForm = submission.save();
