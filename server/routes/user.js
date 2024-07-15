@@ -7,8 +7,9 @@ const nodemailer = require('nodemailer')
 const verifyToken = require('./verifyToken')
 require('dotenv').config();
 
+
 router.post('/register', async (req, res) => {
-    const { name, email, password, address } = req.body;
+    const { name, email, password } = req.body;
     const { error } = regValidation(req.body);
     if (error) return res.send(error.details[0].message);
 
@@ -22,8 +23,7 @@ router.post('/register', async (req, res) => {
     const user = new User({
         name,
         email,
-        password: hash,
-        address
+        password: hash
     })
 
     try {

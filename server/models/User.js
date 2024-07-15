@@ -20,11 +20,6 @@ const regSchema = new mongoose.Schema({
         max:30,
         required:true
     },
-    address:{
-        type:String,
-        min:8,
-        max:30
-    },
     resetPasswordToken:String,
     resetPasswordExpires:Date,
     date:{
