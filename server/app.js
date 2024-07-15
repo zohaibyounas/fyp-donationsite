@@ -11,7 +11,9 @@ app.use(express.json());
 
 const corsOption = {
     exposedHeaders :  ['Content-Length','Authorization','token'],
-    origin:'http://localhost:3000'
+    origin:'http://localhost:3000',
+    methods:['GET','POST','PUT','DELETE'],
+    credentials:true
   }
   
 app.use(cors(corsOption))
