@@ -1,7 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 
 const BlogDetail = ({ blogs }) => {
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
   const { id } = useParams();
   const blog = blogs.find(blog => blog.id === parseInt(id));
 

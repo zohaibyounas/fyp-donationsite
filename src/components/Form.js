@@ -1,13 +1,16 @@
-import React,{useState} from 'react';
+import React,{useEffect, useState} from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 
 const Form = () => {
+  useEffect(() => {
+    window.scrollTo(0,0)
+  }, [])
   const [email,setEmail] = useState("");
   const [password,setPassword] = useState("")
   const navigate = useNavigate();
-
+ 
   const handleSubmit = (e) =>{
     e.preventDefault();
     try {
@@ -50,7 +53,7 @@ const Form = () => {
             <input type="password" name="password" id="password" placeholder="***" className="w-full px-3 py-2 border rounded-md dark:border-gray-300 dark:bg-gray-50 dark:text-gray-800" 
             value={password} onChange={(e)=>setPassword(e.target.value)}
             />
-            <a to="#" className="text-xs lg:mr-64 dark:text-black hover:underline">Forgot password?</a>
+            <Link to="/forgot-password" className="text-xs lg:mr-64 dark:text-black hover:underline">Forgot password?</Link>
           </div>
         </div>
         <div className="space-y-2">

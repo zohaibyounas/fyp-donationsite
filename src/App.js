@@ -18,6 +18,8 @@ import DrJameel from './components/assest/img6.jpg';
 import DrTauseef from './components/assest/img7.jpg';
 import Form from "./components/Form";
 import SignUp from "./components/SignUp";
+import ForgotPassword from "./components/ForgotPassword";
+import ResetPassword from "./components/ResetPassword";
 
 const blogs = [
   { id: 1, image: VcImg, location: 'Peshawar, KPK', title: 'Title 1', content: 'Content for blog 1', date: '15 Jan, 2024' },
@@ -65,6 +67,8 @@ const App = () => {
         <Route path="/blogs/:id" element={<BlogDetail blogs={blogs} />} />
         <Route path="/form" element={<Form />} />
         <Route path="/signup" element={<SignUp />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/resetpass" element={<ResetPassword />} />
       </Routes>
       <Footer />
     </Router>

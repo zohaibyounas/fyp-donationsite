@@ -1,7 +1,7 @@
-import React from 'react';
 import { Link } from 'react-router-dom';
 
 const Blogs = ({ blogs }) => {
+  
   return (
     <div className="container bg-slate-100 mx-auto mt-4 mb-4 md:px-28 md:py-4 sm">
       <h1 className="text-3xl font-bold mb-6 mt-16 flex justify-center items-center">Blogs</h1>
